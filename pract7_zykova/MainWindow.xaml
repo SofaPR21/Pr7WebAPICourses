@@ -1,0 +1,91 @@
+﻿<Window x:Class="pract7_zykova.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Курсы" 
+        Height="450" 
+        Width="1340">
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="750"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
+            <Button Content="Вывести список" Click="Output_Click" Margin="5" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Преподаватель:" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <TextBox Width="150" Margin="5" Text="{Binding FilterTeacher, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Мин. часов:" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <TextBox Width="80" Margin="5" Text="{Binding FilterMinDuration, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Content="Найти" Click="Filter_Click" Margin="5"/>
+            <Button Content="Сбросить" Click="Refresh_Click" Margin="5"/>
+        </StackPanel>
+
+        <ListView Grid.Row="1" Grid.RowSpan="2"
+                  Grid.Column="0"
+                  x:Name="CoursesGrid"
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}" 
+                  SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Название" Width="125" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Преподаватель" Width="160" DisplayMemberBinding="{Binding Teacher}"/>
+                    <GridViewColumn Header="Часы" Width="100" DisplayMemberBinding="{Binding DurationHours}"/>
+                    <GridViewColumn Header="Цена" Width="100" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Активен" Width="125">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsActive}" IsEnabled="False" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Header="Выбранный курс" Width="590">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Название курса" Margin="5,5,5,0"/>
+                    <TextBox Text="{Binding SelectedCourse.Title, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,5"/>
+
+                    <TextBlock Text="Преподаватель" Margin="5,5,5,0"/>
+                    <TextBox Text="{Binding SelectedCourse.Teacher, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,5"/>
+
+                    <TextBlock Text="Продолжительность (часов)" Margin="5,5,5,0"/>
+                    <TextBox Text="{Binding SelectedCourse.DurationHours, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,5"/>
+
+                    <TextBlock Text="Стоимость" Margin="5,5,5,0"/>
+                    <TextBox Text="{Binding SelectedCourse.Price, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,5"/>
+
+                    <CheckBox Content="Активность курса" IsChecked="{Binding SelectedCourse.IsActive}" Margin="5,5,5,10"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
+                    <Button Content="Создать новый" Click="Create_Click" Margin="5"/>
+                    <Button Content="Сохранить (PUT)" Click="Update_Click" Margin="5"/>
+                    <Button Content="Изменить (PATCH)" Click="Patch_Click" Margin="5"/>
+                    <Button Content="Удалить" Click="Delete_Click" Margin="5"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
